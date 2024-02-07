@@ -1,11 +1,20 @@
-import { Button, Sheet, Stack, Table, Typography } from "@mui/joy";
+import {
+  Button,
+  Card,
+  IconButton,
+  Sheet,
+  Stack,
+  Table,
+  Typography,
+} from "@mui/joy";
 import axios from "axios";
-import Notiflix, { Loading, Report } from "notiflix";
+import Notiflix, { Block, Confirm, Loading, Report } from "notiflix";
 import React, { useEffect, useState } from "react";
 import usePaginator from "../Paginator";
 import dayjs from "dayjs";
 import { FaFileExcel } from "react-icons/fa";
 import arrayToExcel from "../../export";
+import { MdDelete, MdEmail } from "react-icons/md";
 
 function Attendees() {
   const [attendees, setAttendees] = useState([]);
@@ -44,13 +53,16 @@ function Attendees() {
   });
   console.log(data);
   return (
-    <Sheet style={{ width: "fit-content", padding: 10 }}>
+    <Card
+      style={{ width: "fit-content", padding: 10 }}
+      sx={{ boxShadow: "lg" }}
+    >
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
         style={{ maxWidth: "80vw" }}
       >
-        <Typography fontWeight={"bold"}>Volunteer List</Typography>
+        <Typography fontWeight={"bold"}>Attendees' List</Typography>
         <Button
           startDecorator={<FaFileExcel />}
           onClick={() =>
@@ -75,21 +87,65 @@ function Attendees() {
             <th>Hearing Method</th>
             <th>Registration Type</th>
             <th>Notes</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
           {data.map((a) => {
             return (
-              <tr key={a._id}>
+              <tr key={a._id} id={"s" + a._id}>
                 <td>{attendees.indexOf(a) + 1}</td>
                 <td>{a.name}</td>
-                <td>{a.email}</td>
+                <td>
+                  {a.email}
+                  <IconButton
+                    onClick={() => window.open(`mailto:${a.email}`)}
+                    size="sm"
+                    sx={{ ml: 1 }}
+                  >
+                    <MdEmail />
+                  </IconButton>
+                </td>
                 <td>{a.phone}</td>
                 <td>{a.organization}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
                 <td>{methods[a.hearingMethod]}</td>
                 <td>{rType[a.regType]}</td>
                 <td style={{ maxWidth: 300 }}>{a.notes}</td>
+                <td>
+                  <IconButton
+                    color="danger"
+                    onClick={async () => {
+                      Confirm.show(
+                        "Confirm Action",
+                        "Are you sure you want to delete this item?",
+                        "Delete",
+                        "Cancel",
+                        async () => {
+                          Block.standard("#s" + a._id);
+                          try {
+                            await axios.delete(`/api/attendee/${a._id}`);
+                            setAttendees(
+                              attendees.filter((d) => d._id != a._id)
+                            );
+                          } catch (error) {
+                            console.log(error);
+                            Report.failure(
+                              "Error",
+                              "Unable to delete record. check internet connection and try again"
+                            );
+                          } finally {
+                            Block.remove("#s" + a._id);
+                          }
+                        },
+                        () => {},
+                        { okButtonBackground: "red" }
+                      );
+                    }}
+                  >
+                    <MdDelete />
+                  </IconButton>
+                </td>
               </tr>
             );
           })}
@@ -100,7 +156,7 @@ function Attendees() {
           </tr>
         </tfoot>
       </Table>
-    </Sheet>
+    </Card>
   );
 }
 

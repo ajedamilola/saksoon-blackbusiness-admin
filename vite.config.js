@@ -7,7 +7,8 @@ export default defineConfig({
   server: {
     proxy: {
       "/api": {
-        target:"https://skbb.net-trix.ca",
+        // target:"https://skbb.net-trix.ca",
+        target:"http://localhost:3000",
         changeOrigin: true,
         rewrite: (path) => path.replace("/api", "/")
       }
