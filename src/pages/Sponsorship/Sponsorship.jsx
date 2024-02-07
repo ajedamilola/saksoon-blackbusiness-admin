@@ -5,19 +5,20 @@ import React, { useEffect, useState } from "react";
 import usePaginator from "../Paginator";
 import dayjs from "dayjs";
 import { FaFileExcel } from "react-icons/fa";
+import arrayToExcel from "../../export";
 
 function Sponsorship() {
   const [attendees, setAttendees] = useState([]);
   const getInfo = async () => {
     Notiflix.Loading.standard("Getting Data");
     try {
-      const { data } = await axios.get("/api/attendee/all", {
+      const { data } = await axios.get("/api/sponsorship/all", {
         headers: {
           auth: "ligmabohls",
         },
       });
       if (!data.err) {
-        setAttendees(data.attendees);
+        setAttendees(data.sponsorRequests.slice());
       } else {
         Report.failure("Error", data.err);
       }
@@ -43,14 +44,24 @@ function Sponsorship() {
   });
   console.log(data);
   return (
-    <Sheet style={{ width: "fit-content", padding:10 }}>
+    <Sheet style={{ width: "fit-content", padding: 10 }}>
       <Stack
         direction={"row"}
         justifyContent={"space-between"}
         style={{ maxWidth: "80vw" }}
       >
-        <Typography fontWeight={"bold"}>Volunteer List</Typography>
-        <Button startDecorator={<FaFileExcel />}>Export</Button>
+        <Typography fontWeight={"bold"}>Sponsorship Request</Typography>
+        <Button
+          startDecorator={<FaFileExcel />}
+          onClick={() =>
+            arrayToExcel(
+              attendees,
+              `sponsorship-requests-${new Date().toDateString()}.xlsx`
+            )
+          }
+        >
+          Export
+        </Button>
       </Stack>
       <Table style={{ width: "max-content" }}>
         <thead>
@@ -61,9 +72,8 @@ function Sponsorship() {
             <th>Phone</th>
             <th>Organisation</th>
             <th>Date</th>
-            <th>Hearing Method</th>
-            <th>Registration Type</th>
-            <th>Notes</th>
+            <th>Level</th>
+            <th>Specific Requirments</th>
           </tr>
         </thead>
         <tbody>
@@ -76,9 +86,8 @@ function Sponsorship() {
                 <td>{a.phone}</td>
                 <td>{a.organization}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
-                <td>{methods[a.hearingMethod]}</td>
-                <td>{rType[a.regType]}</td>
-                <td style={{ maxWidth: 300 }}>{a.notes}</td>
+                <td>{methods[a.level]}</td>
+                <td style={{ maxWidth: 300 }}>{a.specific}</td>
               </tr>
             );
           })}

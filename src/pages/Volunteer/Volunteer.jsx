@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import usePaginator from "../Paginator";
 import dayjs from "dayjs";
 import { FaFileExcel } from "react-icons/fa";
+import arrayToExcel from "../../export";
 
 function Volunteer() {
   const [attendees, setAttendees] = useState([]);
@@ -17,7 +18,7 @@ function Volunteer() {
         },
       });
       if (!data.err) {
-        setAttendees(data.volunteers);
+        setAttendees(data.volunteers.slice().reverse());
       } else {
         Report.failure("Error", data.err);
       }
@@ -55,7 +56,12 @@ function Volunteer() {
         style={{ maxWidth: "80vw" }}
       >
         <Typography fontWeight={"bold"}>Volunteer List</Typography>
-        <Button startDecorator={<FaFileExcel />}>Export</Button>
+        <Button
+          startDecorator={<FaFileExcel />}
+          onClick={() => arrayToExcel(attendees, `volunteers-${new Date().toISOString()}.xlsx`)}
+        >
+          Export
+        </Button>
       </Stack>
       <Table style={{ width: "max-content" }}>
         <thead>
@@ -79,7 +85,7 @@ function Volunteer() {
                 <td>{a.phone}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
                 <td>{av[a.availability]}</td>
-                <td style={{maxWidth:300}}>
+                <td style={{ maxWidth: 300 }}>
                   {a.areas.map((t) => (
                     <span style={{ marginRight: 10 }} key={a}>
                       {t == 3 ? arears[t] : a.specific}

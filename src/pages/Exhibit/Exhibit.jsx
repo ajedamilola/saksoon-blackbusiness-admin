@@ -5,6 +5,7 @@ import React, { useEffect, useState } from "react";
 import usePaginator from "../Paginator";
 import dayjs from "dayjs";
 import { FaFileExcel } from "react-icons/fa";
+import arrayToExcel from "../../export";
 
 function Exhibit() {
   const [attendees, setAttendees] = useState([]);
@@ -17,7 +18,7 @@ function Exhibit() {
         },
       });
       if (!data.err) {
-        setAttendees(data.exhibitors);
+        setAttendees(data.exhibitors.slice().reverse());
       } else {
         Report.failure("Error", data.err);
       }
@@ -44,13 +45,19 @@ function Exhibit() {
   console.log(data);
   return (
     <Sheet style={{ width: "fit-content" }}>
-      <Stack p={2}
+      <Stack
+        p={2}
         direction={"row"}
         justifyContent={"space-between"}
         style={{ maxWidth: "80vw" }}
       >
         <Typography fontWeight={"bold"}>Exhibitors' List</Typography>
-        <Button startDecorator={<FaFileExcel />}>Export</Button>
+        <Button
+          startDecorator={<FaFileExcel />}
+          onClick={() => arrayToExcel(attendees, `exhibitors-${new Date().toDateString()}.xlsx`)}
+        >
+          Export
+        </Button>
       </Stack>
 
       <Table style={{ width: "max-content" }}>
