@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/:path*",
+      "destination": "https://skbb.net-trix.ca/:path*"
+    }
+  ]
+}
