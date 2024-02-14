@@ -114,7 +114,7 @@ function Exhibit() {
                 <td>{a.url}</td>
                 <td style={{ maxWidth: 300 }}>{a.description}</td>
                 <td>{sizes[a.boothSize]}</td>
-                <td style={{ maxWidth: 300 }}>{a.additional} Lorem</td>
+                <td style={{ maxWidth: 300 }}>{a.additional}</td>
                 <td>
                   <IconButton
                     color="danger"

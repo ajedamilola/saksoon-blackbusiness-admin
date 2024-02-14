@@ -44,19 +44,13 @@ function Volunteer() {
     getInfo();
   }, []);
   const av = ["Full Day", "Morning", "Afternoon", "Other"];
-  const arears = [
-    "Event Setup",
-    "Information Desk",
-    "Social Media Support",
-    "Other (Please specify)",
-  ];
+  const arears = ["Event Setup", "Information Desk", "Social Media Support"];
 
   const [pagControl, data] = usePaginator({
     state: attendees,
     showLimiter: true,
     startingLimit: 50,
   });
-  console.log(data);
   return (
     <Card
       style={{ width: "fit-content", padding: 10 }}
@@ -89,8 +83,9 @@ function Volunteer() {
             <th>Email</th>
             <th>Phone</th>
             <th>Date</th>
-            <th>Specific Requirements</th>
-            <th>Avaialablity</th>
+            <th>Reason</th>
+            <th>Availability</th>
+            <th>Areas Of Interest</th>
           </tr>
         </thead>
         <tbody>
@@ -111,15 +106,13 @@ function Volunteer() {
                 </td>
                 <td>{a.phone}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
+                <td>{a.reason}</td>
                 <td>{av[a.availability]}</td>
-                <td style={{ maxWidth: 300 }}>
-                  {a.areas.map((t) => (
-                    <span style={{ marginRight: 10 }} key={a}>
-                      {t == 3 ? arears[t] : a.specific}
-                    </span>
-                  ))}
-                </td>
 
+                <td>
+                  {a.areas.map((a) => arears[a]) + " "}
+                  {a.specific}
+                </td>
                 <td>
                   <IconButton
                     color="danger"
