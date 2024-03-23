@@ -27,11 +27,12 @@ import {
           },
         });
         if (!data.err) {
-          setFeedback(data.feedback.slice().reverse());
+          setFeedback(data.feedbacks.slice().reverse());
         } else {
           Report.failure("Error", data.err);
         }
       } catch (error) {
+        console.log(error)
         Report.failure(
           "Error",
           "Unable to connect with server, check internet connection and try again"
@@ -45,6 +46,10 @@ import {
     }, []);
     const methods = ["Social", "Word Of Mouth", "Other"];
     const rType = ["General", "Student"];
+    const satisfactions = ["Extremely Satisfied","Satisfied","Neutral","Disatisfied","Extremely Disatisfied"]
+    const impressions = ["Very Impressive","Neutral","Disappointing","Very Disappointing"]
+    const network = ["Yes, plenty","Yes, but it could be improved"," No, not enough"]
+    const sessions = ["Excellent","Good","Poor","Did not attend any"]
   
     const [pagControl, data] = usePaginator({
       state: feedback,
@@ -91,10 +96,11 @@ import {
             </tr>
           </thead>
           <tbody>
-            {data.map((a) => {
+            {data.map((f) => {
+              const a = f.data;
               return (
-                <tr key={a._id} id={"s" + a._id}>
-                  <td>{feedback.indexOf(a) + 1}</td>
+                <tr key={f._id} id={"s" + f._id}>
+                  <td>{data.indexOf(a) + 1}</td>
                   <td>{a.name}</td>
                   <td>
                     {a.email}
@@ -106,11 +112,11 @@ import {
                       <MdEmail />
                     </IconButton>
                   </td>
-                  <td>{a.satisfaction}</td>
-                  <td>{rType[a.regType]}</td>
+                  <td>{satisfactions[a.satisfaction]}</td>
+                  <td>{a.venueRating}</td>
                   <td>{a.exhibitors}</td>
-                  <td>{a.networking}</td>
-                  <td>{a.sessions}</td>
+                  <td>{network[a.networking]}</td>
+                  <td>{sessions[a.sessions]}</td>
                   <td>{a.additionalComments}</td>
                   <td>{methods[a.hearingMethod]}</td>
                   <td style={{ maxWidth: 300 }}>{a.additionalcomments}</td>
@@ -124,11 +130,11 @@ import {
                           "Delete",
                           "Cancel",
                           async () => {
-                            Block.standard("#s" + a._id);
+                            Block.standard("#s" + f._id);
                             try {
-                              await axios.delete(`/api/feedback/${a._id}`);
+                              await axios.delete(`/api/feedback/${f._id}`);
                               setFeedback(
-                                feedback.filter((d) => d._id != a._id)
+                                feedback.filter((d) => d._id != f._id)
                               );
                             } catch (error) {
                               console.log(error);
@@ -137,7 +143,7 @@ import {
                                 "Unable to delete record. check internet connection and try again"
                               );
                             } finally {
-                              Block.remove("#s" + a._id);
+                              Block.remove("#s" + f._id);
                             }
                           },
                           () => {},

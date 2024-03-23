@@ -78,6 +78,10 @@ function Protected() {
                 <ListItemButton onClick={() => navigate("/sponsorships")}>
                   <ListItemContent>Sponsorship Requests</ListItemContent>
                 </ListItemButton>
+
+                <ListItemButton onClick={() => navigate("/feedback")}>
+                  <ListItemContent>Feedback</ListItemContent>
+                </ListItemButton>
               </List>
             </Drawer>
             <div
