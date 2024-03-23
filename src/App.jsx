@@ -7,6 +7,7 @@ import Volunteer from "./pages/Volunteer/Volunteer";
 import Login from "./pages/Login";
 import Protected from "./Protected";
 import Attendees from "./pages/Attendees/Attendees";
+import Feedback from "./pages/feedback/feedback";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route Component={Exhibit} path="/exhibitors" />
           <Route Component={Sponsorship} path="/sponsorships" />
           <Route Component={Volunteer} path="/volunteers" />
+          <Route Component={Feedback} path="/feedback" />
         </Route>
         <Route Component={Login} path="/login" />
       </Routes>
