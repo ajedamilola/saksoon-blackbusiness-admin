@@ -49,7 +49,7 @@ import {
     const satisfactions = ["Extremely Satisfied","Satisfied","Neutral","Disatisfied","Extremely Disatisfied"]
     const impressions = ["Very Impressive","Neutral","Disappointing","Very Disappointing"]
     const network = ["Yes, plenty","Yes, but it could be improved"," No, not enough"]
-    const sessions = ["Excellent","Good","Poor","Did not attend any"]
+    const sessions = ["Excellent","Good","Fair","Poor","Did not attend any"]
   
     const [pagControl, data] = usePaginator({
       state: feedback,
@@ -114,7 +114,7 @@ import {
                   </td>
                   <td>{satisfactions[a.satisfaction]}</td>
                   <td>{a.venueRating}</td>
-                  <td>{a.exhibitors}</td>
+                  <td>{impressions[a.exhibitors]}</td>
                   <td>{network[a.networking]}</td>
                   <td>{sessions[a.sessions]}</td>
                   <td>{a.additionalComments}</td>
