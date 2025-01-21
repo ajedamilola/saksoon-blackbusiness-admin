@@ -76,7 +76,7 @@ function Sponsorship() {
           Export
         </Button>
       </Stack>
-      <Table style={{ width: "max-content" }}>
+      <Table style={{ width: "max-content" }} stripe="even" hoverRow>
         <thead>
           <tr>
             <th>S/N</th>
@@ -136,7 +136,7 @@ function Sponsorship() {
                             Block.remove("#s" + a._id);
                           }
                         },
-                        () => {},
+                        () => { },
                         { okButtonBackground: "red" }
                       );
                     }}

@@ -44,7 +44,7 @@ function Attendees() {
     getInfo();
   }, []);
   const methods = ["Social", "Word Of Mouth", "Other"];
-  const rType = ["General", "Student"];
+  const rType = ["General", "Investor", "Student"];
 
   const [pagControl, data] = usePaginator({
     state: attendees,
@@ -62,7 +62,7 @@ function Attendees() {
         justifyContent={"space-between"}
         style={{ maxWidth: "80vw" }}
       >
-        <Typography fontWeight={"bold"}>Attendees' List</Typography>
+        <Typography fontWeight={"bold"}>Attendees&apos; List</Typography>
         <Button
           startDecorator={<FaFileExcel />}
           onClick={() =>
@@ -75,7 +75,7 @@ function Attendees() {
           Export
         </Button>
       </Stack>
-      <Table style={{ width: "max-content" }}>
+      <Table style={{ width: "max-content" }} stripe="even" hoverRow>
         <thead>
           <tr>
             <th>S/N</th>
@@ -110,7 +110,14 @@ function Attendees() {
                 <td>{a.organization}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
                 <td>{methods[a.hearingMethod]}</td>
-                <td>{rType[a.regType]}</td>
+                <td>
+                  {rType[a.regType]}
+                  {a.regType == 2 && <Button size="sm" style={{
+                    marginLeft: 10
+                  }} onClick={() => window.open("/api/attendee/student-id/" + a._id)}>
+                    See ID
+                  </Button>}
+                </td>
                 <td style={{ maxWidth: 300 }}>{a.notes}</td>
                 <td>
                   <IconButton
@@ -138,7 +145,7 @@ function Attendees() {
                             Block.remove("#s" + a._id);
                           }
                         },
-                        () => {},
+                        () => { },
                         { okButtonBackground: "red" }
                       );
                     }}

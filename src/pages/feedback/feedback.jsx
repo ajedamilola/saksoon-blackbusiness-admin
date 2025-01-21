@@ -86,7 +86,7 @@ function Feedback() {
           startDecorator={<FaFileExcel />}
           onClick={() =>
             arrayToExcel(
-              feedback.map((f) => ({...f.data, date:new Date(f.date).toLocaleString()})),
+              feedback.map((f) => ({ ...f.data, date: new Date(f.date).toLocaleString() })),
               `feedback-${new Date().toDateString()}.xlsx`
             )
           }
@@ -94,7 +94,7 @@ function Feedback() {
           Export
         </Button>
       </Stack>
-      <Table style={{ width: "max-content" }}>
+      <Table style={{ width: "max-content" }} stripe="even" hoverRow>
         <thead>
           <tr>
             <th>S/N</th>
@@ -158,7 +158,7 @@ function Feedback() {
                             Block.remove("#s" + f._id);
                           }
                         },
-                        () => {},
+                        () => { },
                         { okButtonBackground: "red" }
                       );
                     }}

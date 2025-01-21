@@ -44,7 +44,7 @@ function Volunteer() {
     getInfo();
   }, []);
   const av = ["Full Day", "Morning", "Afternoon", "Other"];
-  const arears = ["Event Setup", "Information Desk", "Social Media Support"];
+  const arears = ["Event Setup", "Information Desk", "Social Media Support", "Greeters"];
 
   const [pagControl, data] = usePaginator({
     state: attendees,
@@ -75,7 +75,7 @@ function Volunteer() {
           Export
         </Button>
       </Stack>
-      <Table style={{ width: "max-content" }}>
+      <Table style={{ width: "max-content" }} stripe="even" hoverRow>
         <thead>
           <tr>
             <th>S/N</th>
@@ -106,7 +106,7 @@ function Volunteer() {
                 </td>
                 <td>{a.phone}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
-                <td>{a.reason}</td>
+                <td style={{ maxWidth: 500 }}>{a.reason}</td>
                 <td>{av[a.availability]}</td>
 
                 <td>
@@ -139,7 +139,7 @@ function Volunteer() {
                             Block.remove("#s" + a._id);
                           }
                         },
-                        () => {},
+                        () => { },
                         { okButtonBackground: "red" }
                       );
                     }}

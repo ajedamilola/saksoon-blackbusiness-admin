@@ -77,7 +77,7 @@ function Exhibit() {
           Export
         </Button>
       </Stack>
-      <Table style={{ width: "max-content" }}>
+      <Table style={{ width: "max-content" }} stripe="even" hoverRow>
         <thead>
           <tr>
             <th>S/N</th>
@@ -112,7 +112,7 @@ function Exhibit() {
                 <td>{a.phone}</td>
                 <td>{dayjs(a.date).format("DD MMMM YYYY hh:mmA")}</td>
                 <td>{a.url}</td>
-                <td style={{ maxWidth: 300 }}>{a.description}</td>
+                <td style={{ maxWidth: 500 }}>{a.description}</td>
                 <td>{sizes[a.boothSize]}</td>
                 <td style={{ maxWidth: 300 }}>{a.additional}</td>
                 <td>
@@ -141,7 +141,7 @@ function Exhibit() {
                             Block.remove("#s" + a._id);
                           }
                         },
-                        () => {},
+                        () => { },
                         { okButtonBackground: "red" }
                       );
                     }}
